@@ -34,17 +34,18 @@ RUN apk add --no-cache \
       openssl=${OPENSSL_VER} && \
     touch /etc/samba/smb.conf && \
     # set us up to run as non-root user
-    # addgroup -g ${USER_GID} ${USER_NAME} && \
-    adduser -D -u ${USER_UID} -G ${USER_GID} ${USER_NAME} && \
+    adduser -D -u ${USER_UID} ${USER_NAME} && \
     # ensure smb stuff works correctly
     mkdir -p /var/cache/samba && \
     chmod 0755 /var/cache/samba && \
-    chown ${USER_NAME} /var/cache/samba
+    chown ${USER_NAME} /var/cache/samba && \
     cp /usr/share/zoneinfo/Europe/Rome /etc/localtime && \
     echo "Europe/Rome" > /etc/timezone && \
     apk del tzdata
 
 USER ${USER_NAME}
+
+ENV PATH=$PATH:/home/${USER_NAME}/.local/bin
 
 RUN pip3 install --user awscli==${AWSCLI_VER}
 
