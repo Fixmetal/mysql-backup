@@ -10,16 +10,17 @@ ARG USER_GID=1005
 
 ARG AWSCLI_VER=1.18.211
 ARG BASH_VER=5.0.17-r0
-ARG MARIADB_CLIENT_VER=10.4.15-r0
+ARG MARIADB_CLIENT_VER=10.4.17-r1
 ARG MARIADB_CONNECTOR_C_VER=3.1.8-r1
-ARG PYTHON3_VER=3.8.5-r0
+ARG PYTHON3_VER=3.8.5-r1
 ARG PY3_PIP_VER=20.1.1-r0
 ARG SAMBA_CLIENT_VER=4.12.9-r0
-ARG OPENSSL_VER=1.1.1i-r0
-ARG TZDATA_VER=2020f-r0
+ARG OPENSSL_VER=1.1.1j-r0
+ARG TZDATA_VER=2021a-r0
 
-ENV PIP_DISABLE_PIP_VERSION_CHECK=1
-ENV PIP_NO_CACHE_DIR=off
+ENV PIP_DISABLE_PIP_VERSION_CHECK 1
+ENV PIP_NO_CACHE_DIR off
+ENV TZ Europe/Rome
 
 # install the necessary client
 # the mysql-client must be 10.3.15 or later
@@ -40,7 +41,7 @@ RUN apk add --no-cache \
     chmod 0755 /var/cache/samba && \
     chown ${USER_NAME} /var/cache/samba && \
     cp /usr/share/zoneinfo/Europe/Rome /etc/localtime && \
-    echo "Europe/Rome" > /etc/timezone && \
+    echo "${TZ}" > /etc/timezone && \
     apk del tzdata
 
 USER ${USER_NAME}
